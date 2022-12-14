@@ -90,13 +90,18 @@ router.put('/:id', (req, res) => {
     })
     .then((updatedProductTags) => res.json(updatedProductTags))
     .catch((err) => {
-      // console.log(err);
+      console.log(err);
       res.status(400).json(err);
     });
 });
 
-router.delete('/:id', (req, res) => {
-  // delete one product by its `id` value
+// delete one product by its `id` value
+router.delete('/:id', async (req, res) => {
+  await Product.destroy({ where: { id: req.params.id }}).catch((err) => {
+    res.json(err);
+  });
+  const success = `Deleted: ${req.params.id}`;
+  res.json(success);
 });
 
 module.exports = router;
